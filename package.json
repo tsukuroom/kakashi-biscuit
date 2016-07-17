@@ -1,0 +1,23 @@
+{
+  "name": "kakashi-biscuit",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tsukuroom/kakashi-biscuit.git"
+  },
+  "author": "Yoshiyuki Toda <ytoda129@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tsukuroom/kakashi-biscuit/issues"
+  },
+  "homepage": "https://github.com/tsukuroom/kakashi-biscuit#readme",
+  "dependencies": {
+    "serialport": "^4.0.1",
+    "request": "^2.73.0"
+  }
+}
