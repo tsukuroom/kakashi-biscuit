@@ -3,7 +3,7 @@
 const fs = require('fs');
 const debug = require('debug')('index');
 const theta = require('./lib/theta');
-// const imageProcessor = require('lib/imageprocessor');
+const imageProcessor = require('./lib/imageprocessor');
 // const birdRecognizer = require('lib/birdrecognizer');
 
 const imageDir = './images';
@@ -15,6 +15,10 @@ theta.captureImageAndDownload()
   })
   .then((path) => {
     debug('path=' + path);
+    return imageProcessor.trimming(path);
+  })
+  .then((croppedFilePath) => {
+    debug('croppedFilePath=' + croppedFilePath);
   })
   .catch(() => {
     debug('capture fail');
