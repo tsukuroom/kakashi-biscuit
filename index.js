@@ -4,7 +4,7 @@ const fs = require('fs');
 const debug = require('debug')('index');
 const theta = require('./lib/theta');
 const imageProcessor = require('./lib/imageprocessor');
-// const birdRecognizer = require('lib/birdrecognizer');
+const birdRecognizer = require('./lib/birdrecognizer');
 
 const imageDir = './images';
 
@@ -19,6 +19,14 @@ theta.captureImageAndDownload()
   })
   .then((croppedFilePath) => {
     debug('croppedFilePath=' + croppedFilePath);
+    return birdRecognizer.birdExists(croppedFilePath);
+  })
+  .then((exist) => {
+    if (exist) {
+      debug('bird exists');
+    } else {
+      debug('bird not exists');
+    }
   })
   .catch(() => {
     debug('capture fail');
@@ -27,6 +35,7 @@ theta.captureImageAndDownload()
 function writeImage(image, dir) {
   return new Promise((resolve, reject) => {
     var filepath = `${process.cwd()}/${image.name}`;
+
     if (dir) {
       filepath = `${dir}/${image.name}`;
     }
@@ -34,6 +43,7 @@ function writeImage(image, dir) {
     fs.writeFile(filepath, image.data,
                  (error) => {
                    if (error) {
+                     debug(error);
                      return reject(error);
                    }
                    debug(`written file: ${filepath}`);

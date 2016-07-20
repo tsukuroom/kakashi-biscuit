@@ -41,3 +41,6 @@ jspm_packages
 
 # image directory
 /images/
+
+# for Mac
+.DS_Store
