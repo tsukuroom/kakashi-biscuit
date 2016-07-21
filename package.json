@@ -23,6 +23,7 @@
     "abc": "https://github.com/ricoh-iot/abc.git",
     "imagemagick": "^0.1.3",
     "clarifai": "^1.2.1",
-    "node-base64-image": "^1.0.1"
+    "node-base64-image": "^1.0.1",
+    "serialport": "^4.0.1"
   }
 }
