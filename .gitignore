@@ -44,3 +44,9 @@ jspm_packages
 
 # for Mac
 .DS_Store
+
+# gtags
+GPATH
+GRTAGS
+GSYMS
+GTAGS

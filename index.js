@@ -10,6 +10,7 @@ const SerialPort = require('serialport');
 const imageDir = './images';
 
 function processBirdDetect() {
+  debug('processBirdDetect');
   theta.captureImageAndDownload()
     .then((image) => {
       debug('capture success image=' + image.name);
@@ -58,6 +59,8 @@ function writeImage(image, dir) {
   });
 }
 
+var ignoreFromArduino = false;
+
 var serialopts = {
   baudRate: 9600,
   dataBits: 8,
@@ -67,36 +70,43 @@ var serialopts = {
   parser: SerialPort.parsers.readline("\n")
 };
 
-const port = new SerialPort('/dev/cu.usbmodem1411', serialopts);
-
-var ignoreFromArduino = false;
-
-port.on('open', (err) => {
-  if (err) {
-    debug(err);
-    return;
-  }
-
-  setTimeout(() => {
-    port.write('start 50\n', (err) => {
-      if (err) {
-        debug(err);
-        return;
-      }
-
-      debug('written');
-    }, 2000);
+SerialPort.list((err, ports) => {
+  var arduinoPort = ports.find((elem, index, array) => {
+    return elem.vendorId == "0x2341";
   });
-});
-
-port.on('data', (input) => {
-  if (ignoreFromArduino) {
-    return;
-  }
-  ignoreFromArduino = true;
-  processBirdDetect();
-});
-
-port.on('err', (err) => {
-  debug(err);
+  debug(arduinoPort.comName);
+  
+  var port = new SerialPort(arduinoPort.comName, serialopts);
+  
+  port.on('open', (err) => {
+    if (err) {
+      debug(err);
+      return;
+    }
+    
+    setTimeout(() => {
+      port.write('start 50\n', (err) => {
+        if (err) {
+          debug(err);
+          return;
+        }
+        
+        debug('written');
+      }, 2000);
+    });
+  });
+  
+  port.on('data', (input) => {
+    if (ignoreFromArduino) {
+      return;
+    }
+    ignoreFromArduino = true;
+    if (input.startsWith("chikai")) {
+      processBirdDetect();
+    }
+  });
+  
+  port.on('err', (err) => {
+    debug(err);
+  });
 });
