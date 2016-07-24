@@ -39,8 +39,9 @@ jspm_packages
 # emacs backup file
 *~
 
-# image directory
+# tmp directory
 /images/
+/sound/
 
 # for Mac
 .DS_Store

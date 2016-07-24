@@ -6,6 +6,7 @@ const theta = require('./lib/theta');
 const imageProcessor = require('./lib/imageprocessor');
 const birdRecognizer = require('./lib/birdrecognizer');
 const SerialPort = require('serialport');
+const exec = require('child_process').exec;
 
 const imageDir = './images';
 
@@ -28,6 +29,15 @@ function processBirdDetect() {
       if (exist) {
         debug('bird exists');
         port.write('cracker\n');
+        setTimeout(() => {
+          exec('play sound/gun-fire05.wav', (err, stdout, stderr) => {
+            if (err) {
+              debug(err);
+            }
+            // debug(stdout);
+            // debug(stderr);
+          });
+        }, 900);
       } else {
         debug('bird not exists');
       }
@@ -60,6 +70,7 @@ function writeImage(image, dir) {
 }
 
 var ignoreFromArduino = false;
+var port;
 
 var serialopts = {
   baudRate: 9600,
@@ -76,7 +87,7 @@ SerialPort.list((err, ports) => {
   });
   debug(arduinoPort.comName);
   
-  var port = new SerialPort(arduinoPort.comName, serialopts);
+  port = new SerialPort(arduinoPort.comName, serialopts);
   
   port.on('open', (err) => {
     if (err) {
