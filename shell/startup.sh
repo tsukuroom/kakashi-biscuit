@@ -5,7 +5,7 @@ KAKASHI_HOME=$(cd $(dirname $0); pwd)/..
 mkdir -p $KAKASHI_HOME/images
 mkdir -p $KAKASHI_HOME/log
 
-CARDNO=$(aplay -l | grep USB | awk '{print sub(/.$/,"",$2)}')
+CARDNO=$(aplay -l | grep USB | awk '{sub(/.$/,"",$2); print $2}')
 
 export AUDIODRIVER=alsa
 export AUDIODEV=plughw:${CARDNO:-0},0
