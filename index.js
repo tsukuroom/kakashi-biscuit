@@ -12,6 +12,9 @@ const imageDir = './images';
 
 function processBirdDetect() {
   debug('processBirdDetect');
+  
+  port.write('recognize\n');
+  
   theta.captureImageAndDownload()
     .then((image) => {
       debug('capture success image=' + image.name);
@@ -40,6 +43,7 @@ function processBirdDetect() {
         }, 900);
       } else {
         debug('bird not exists');
+        port.write('blue\n');
       }
       ignoreFromArduino = false;
     })
@@ -96,7 +100,7 @@ SerialPort.list((err, ports) => {
     }
     
     setTimeout(() => {
-      port.write('start 50\n', (err) => {
+      port.write('monitor 50\n', (err) => {
         if (err) {
           debug(err);
           return;
